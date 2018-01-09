@@ -1,5 +1,4 @@
 import numpy as np
-import cv2
 import pickle
 import os
 # import sys
@@ -7,8 +6,8 @@ import os
 
 from utils.image import *
 from utils.debug import debug
-from utils.data import load_data
-from model.model import create_new_model, precision_metric
+from utils.data import load_data, prompt_for_sensor, prompt_for_saved_model
+from model.model import create_new_model, precision_metric, recall_metric
 import tensorflow as tf
 
 from keras.optimizers import SGD
@@ -19,11 +18,11 @@ from keras.callbacks import ModelCheckpoint
 
 
 BATCH_SIZE = 32
-NUM_EPOCHS = 8 # to get to 30; we stopped at 22
-CLASS_WEIGHTS = {0: 1., 1: 2.}   # To weight the rarer 1s more. customize on sensor
+NUM_EPOCHS = 30
+CLASS_WEIGHTS = {0: 1., 1: 5.}   # To weight the rarer 1s more. customize on sensor
 
-valid_train_sensor_ids = ['02', '04', '06', '08', '11', \
-                          '23', '52', '62', '63', '72']
+valid_train_sensor_ids = ['02', '04', '06', '08', '11', '15', \
+                          '23', '39', '52', '59', '62', '63', '72']
 model_base_name = "hhd_model_"
 
 def start_new_training(sensor_id):
@@ -86,25 +85,12 @@ def train_on_sensor(sensor_id, saved_model_name):
         start_new_training(sensor_id)
 
 
-def prompt_for_sensor():
-    sensor_id = input("Sensor to train on (2 digits): ")
-    if sensor_id not in valid_train_sensor_ids:
-        raise ValueError("Not a valid sensor id for training")
-    return sensor_id
-
-def prompt_for_saved_model():
-    # User has to provide the full path
-    name = input("path to model to load? e.g. 'model/06/hhd_model...' (Enter to skip): ")
-    if len(name) > 0:
-        assert os.path.exists(name)
-    return name
-
 if __name__ == "__main__":
     #sensor_id = prompt_for_sensor()
-    sensor_id = '06'
+    sensor_id = '08'
 
     #saved_model_name = prompt_for_saved_model()
-    saved_model_path = "model/06/hhd_model__22-0.191.h5"
+    saved_model_path = ""
     
     train_on_sensor(sensor_id, saved_model_path)
 
