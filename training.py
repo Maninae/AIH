@@ -107,11 +107,11 @@ def train_on_sensor(sensor_id, saved_model_path, custom_data_path):
 
 if __name__ == "__main__":
     #sensor_id = prompt_for_sensor()
-    sensor_id = '63'
+    sensor_id = '04'
     # FloydHub datasets are mounted at root
-    custom_data_path = "/dataset/63/"
+    custom_data_path = "/dataset/04/"
     # Change weighting of positive samples in CLASS_WEIGHTS if desired
-    CLASS_WEIGHTS[1] = 2.
+    CLASS_WEIGHTS[1] = 10.
 
     #saved_model_name = prompt_for_saved_model()
     saved_model_path = ""

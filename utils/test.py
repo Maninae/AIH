@@ -5,6 +5,13 @@ from image import *
 import os
 import pickle
 
+##############################
+
+# Dumping ground for miscellaneous, one-time, quick-and-dirty code.
+
+##############################
+
+
 # A = np.load('../dataset/04/0/20160930_082811_796.npz')
 # A = A['x']
 # debug(A)
@@ -28,16 +35,25 @@ import pickle
 # with open('/output/stupid_test_output.pkl', 'wb') as f:
 #   pickle.dump(sensor_06_history, f)
 
+def graph(sensor_id):
+    history_path = "model/completed/%s/history__sensor%s__ep0-29.pkl" % (sensor_id, sensor_id)
+    with open(history_path, 'rb') as f:
+        history = np.load(f)
 
-# history_path = "model/hidden_tmp/06/history__sensor06__ep0-29.pkl"
-# with open(history_path, 'rb') as f:
-#     history = np.load(f)
+    save_dir = 'assets/figures/%s' % sensor_id
+    os.makedirs(save_dir)
 
-# save_dir = 'assets/figures/06'
-# os.makedirs(save_dir)
+    build_graphs_of_training_metrics(history, save_dir)
 
-# build_graphs_of_training_metrics(history, save_dir)
+def combining_datasets(sensor_id):
+    os.system("mv %s/train/0/* all/train/0" % sensor_id)
+    os.system("mv %s/train/1/* all/train/1" % sensor_id)
+    os.system("mv %s/dev/0/* all/dev/0" % sensor_id)
+    os.system("mv %s/dev/1/* all/dev/1" % sensor_id)
 
 if __name__ == "__main__":
-    pass
+    #graph('08')
+    red = ['10', '15', '21', '22', '24', '39', '59']
+    for a in red:
+        combining_datasets(a)
 

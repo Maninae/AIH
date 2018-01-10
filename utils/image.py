@@ -17,9 +17,10 @@ def display(data):
     cv2.imshow("Image", ocean)
     cv2.waitKey(0)
 
-def display_by_name(name):
-    data = np.load(name)
-    display(data)
+def display_by_path(path):
+    with open(path, 'rb') as f:
+        data = np.load(f)
+        display(data)
 
 # Usage e.g.
 #   build_graphs_of_training_metrics(history, "assets/figures/06")
