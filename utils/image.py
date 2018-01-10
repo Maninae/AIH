@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+import os
 
 def depth_map_to_image(depth_map):
     img = cv2.normalize(depth_map, depth_map, 0, 1, cv2.NORM_MINMAX)

@@ -27,3 +27,17 @@ import pickle
 
 # with open('/output/stupid_test_output.pkl', 'wb') as f:
 #   pickle.dump(sensor_06_history, f)
+
+
+# history_path = "model/hidden_tmp/06/history__sensor06__ep0-29.pkl"
+# with open(history_path, 'rb') as f:
+#     history = np.load(f)
+
+# save_dir = 'assets/figures/06'
+# os.makedirs(save_dir)
+
+# build_graphs_of_training_metrics(history, save_dir)
+
+if __name__ == "__main__":
+    pass
+
