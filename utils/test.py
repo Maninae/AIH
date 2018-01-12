@@ -35,13 +35,14 @@ import pickle
 # with open('/output/stupid_test_output.pkl', 'wb') as f:
 #   pickle.dump(sensor_06_history, f)
 
-def graph(sensor_id):
-    history_path = "model/completed/%s/history__sensor%s__ep0-29.pkl" % (sensor_id, sensor_id)
+def graph(sensor_id, final_epoch):
+    history_path = "model/completed/%s/history__sensor%s__ep0-%s.pkl" % (sensor_id, sensor_id, final_epoch)
     with open(history_path, 'rb') as f:
         history = np.load(f)
 
     save_dir = 'assets/figures/%s' % sensor_id
-    os.makedirs(save_dir)
+    if not os.path.isdir(save_dir):
+        os.makedirs(save_dir)
 
     build_graphs_of_training_metrics(history, save_dir)
 
@@ -51,9 +52,19 @@ def combining_datasets(sensor_id):
     os.system("mv %s/dev/0/* all/dev/0" % sensor_id)
     os.system("mv %s/dev/1/* all/dev/1" % sensor_id)
 
-if __name__ == "__main__":
-    #graph('08')
-    red = ['10', '15', '21', '22', '24', '39', '59']
-    for a in red:
-        combining_datasets(a)
+# loss =  [0.8333, 0.4626, 0.3661, 0.3140, 0.2823, 0.2586, 0.2442, 0.2291, 0.2220, 0.2118, 0.2053, 0.2007, 0.1942, 0.1923, 0.1860, 0.1812, 0.1796, 0.1749, 0.1719, 0.1702, 0.1674, 0.1662, 0.1643, 0.1618, 0.1601]
+# acc  =  [0.7972, 0.9145, 0.9403, 0.9529, 0.9606, 0.9654, 0.9693, 0.9716, 0.9734, 0.9753, 0.9765, 0.9780, 0.9790, 0.9794, 0.9807, 0.9812, 0.9820, 0.9831, 0.9834, 0.9836, 0.9841, 0.9844, 0.9851, 0.9854, 0.9857]
+# vloss = [0.1991, 0.1569, 0.1325, 0.1283, 0.1402, 0.1264, 0.1220, 0.1238, 0.1245, 0.1202, 0.1164, 0.1165, 0.1162, 0.1154, 0.1163, 0.1156, 0.1153, 0.1180, 0.1144, 0.1162, 0.1156, 0.1142, 0.1140, 0.1157, 0.1151]
+# vacc  = [0.9698, 0.9817, 0.9898, 0.9910, 0.9883, 0.9924, 0.9928, 0.9930, 0.9933, 0.9939, 0.9948, 0.9941, 0.9946, 0.9946, 0.9948, 0.9948, 0.9947, 0.9950, 0.9950, 0.9948, 0.9951, 0.9957, 0.9955, 0.9947, 0.9951]
 
+# dct = {
+#     'loss' : loss,
+#     'binary_accuracy': acc,
+#     'val_loss': vloss,
+#     'val_binary_accuracy': vacc
+# }
+# with open("model/completed/all/history__sensorALL__ep0-24.pkl", 'wb') as f:
+#     pickle.dump(dct, f)
+
+if __name__ == "__main__":
+    graph('all', '24')

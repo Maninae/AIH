@@ -30,12 +30,16 @@ def precision_metric(y_true, y_pred):
     predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
     precision = true_positives / (predicted_positives + K.epsilon())
     return precision
+get_custom_objects().update({"precision_metric": precision_metric})
+
 
 def recall_metric(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
     recall = true_positives / (possible_positives + K.epsilon())
     return recall
+get_custom_objects().update({"recall_metric": recall_metric})
+
 
 # https://stackoverflow.com/questions/43915482/how-do-you-create-a-custom-activation-function-with-keras
 def swish(x):

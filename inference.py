@@ -3,8 +3,8 @@ import numpy as np
 import keras
 from keras.models import load_model
 
-from utils.data import load_data_for_prediction, prompt_for_inference_data_path, prompt_for_saved_model
-from model.model import swish
+from utils.data import *
+from model.model import *
 
 if __name__ == "__main__":
     model_path = prompt_for_saved_model()

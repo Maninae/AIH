@@ -6,10 +6,8 @@ import os
 
 from utils.image import *
 from utils.debug import debug
-from utils.data import load_data, prompt_for_sensor, prompt_for_saved_model
-from model.model import create_new_model
-from model.model import precision_metric, recall_metric
-from model.model import swish
+from utils.data import *
+from model.model import *
 import tensorflow as tf
 
 from keras.optimizers import SGD
@@ -24,7 +22,7 @@ NUM_EPOCHS = 30
 CLASS_WEIGHTS = {0: 1., 1: 1.}   # To weight the rarer 1s more. customize on sensor in main
 
 valid_train_sensor_ids = ['02', '04', '06', '08', '11', '15', \
-                          '23', '39', '52', '59', '62', '63', '72']
+                          '23', '39', '52', '59', '62', '63', '72', 'all']
 model_base_name = "hhd_model_"
 
 def start_new_training(sensor_id, data_path=None):
@@ -107,14 +105,18 @@ def train_on_sensor(sensor_id, saved_model_path, custom_data_path):
 
 if __name__ == "__main__":
     #sensor_id = prompt_for_sensor()
-    sensor_id = '04'
+    sensor_id = 'all'
     # FloydHub datasets are mounted at root
-    custom_data_path = "/dataset/04/"
+    custom_data_path = "/dataset/all/"
     # Change weighting of positive samples in CLASS_WEIGHTS if desired
-    CLASS_WEIGHTS[1] = 10.
+    CLASS_WEIGHTS[1] = 7.
 
     #saved_model_name = prompt_for_saved_model()
+    # For retrieval of previous model
     saved_model_path = ""
+
+    # For saving the model later
+    model_base_name = "hhd_model__sensorALL_"
     
     train_on_sensor(sensor_id, saved_model_path, custom_data_path)
 

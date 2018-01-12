@@ -4,7 +4,7 @@ import numpy as np
 
 valid_sensor_ids = ['02', '04', '06', '08', '10', '11', '15', \
                     '21', '22', '23', '24', '39', '52', '59', \
-                    '62', '63', '72']
+                    '62', '63', '72', 'all']
 
 # Only for inference! For training use |load_data|.
 def load_data_for_prediction(data_path):
@@ -40,9 +40,7 @@ def load_data_for_prediction(data_path):
 def load_data(sensor_path):
     print("Loading data for TRAINING at: %s." % sensor_path)
     # Give it as "dataset/02/" with end slash
-    sensor_id = sensor_path[-3:-1]
-    assert sensor_id in valid_sensor_ids
-
+    
     train_data = []
     train_label = []
 
