@@ -41,7 +41,6 @@ def recall_metric(y_true, y_pred):
 get_custom_objects().update({"recall_metric": recall_metric})
 
 
-# https://stackoverflow.com/questions/43915482/how-do-you-create-a-custom-activation-function-with-keras
 def swish(x):
     return K.sigmoid(x) * x
 get_custom_objects().update({'swish': Activation(swish)})

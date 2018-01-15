@@ -53,16 +53,16 @@ def train(model, sensor_id, custom_path=None):
     
     data_path = 'dataset/%s/' % sensor_id
     # Provided data_path overrides default data path (from local Git organization)
-    if data_path is not None:
+    if custom_path is not None:
         data_path = custom_path
 
     train_data, train_label, dev_data, dev_label = load_data(data_path)
     print("Running the fit call...")
 
-    #savepath = "model/%s/%s_ep{epoch:02d}-vloss={val_loss:.4f}-vbacc={val_binary_accuracy:.4f}.h5" % (sensor_id, model_base_name)
+    savepath = "model/%s/%s_ep{epoch:02d}-vloss={val_loss:.4f}-vbacc={val_binary_accuracy:.4f}.h5" % (sensor_id, model_base_name)
     # For Floyd output:
-    os.makedirs("/output/model/%s/" % sensor_id)
-    savepath = "/output/model/%s/%s_ep{epoch:02d}-vloss={val_loss:.4f}-vbacc={val_binary_accuracy:.4f}.h5" % (sensor_id, model_base_name)
+    # os.makedirs("/output/model/%s/" % sensor_id)
+    # savepath = "/output/model/%s/%s_ep{epoch:02d}-vloss={val_loss:.4f}-vbacc={val_binary_accuracy:.4f}.h5" % (sensor_id, model_base_name)
     
     checkpointer = ModelCheckpoint(savepath, monitor='val_binary_accuracy')
 
@@ -78,11 +78,12 @@ def train(model, sensor_id, custom_path=None):
                         class_weight=CLASS_WEIGHTS,
                         callbacks=[checkpointer])
 
-    # Do something with the history, e.g. plot it
+    # Code to graph the history loss and metrics is in ```test.py```.
     print(history.history)
-    #with open("model/%s/history.pkl" % sensor_id, 'wb') as f:
+
     # For Floyd output:
-    with open("/output/model/%s/history.pkl" % sensor_id, 'wb') as f:
+    # with open("/output/model/%s/history.pkl" % sensor_id, 'wb') as f:
+    with open("model/%s/history.pkl" % sensor_id, 'wb') as f:
         pickle.dump(history.history, f)
 
 
@@ -104,19 +105,24 @@ def train_on_sensor(sensor_id, saved_model_path, custom_data_path):
 
 
 if __name__ == "__main__":
-    #sensor_id = prompt_for_sensor()
-    sensor_id = 'all'
-    # FloydHub datasets are mounted at root
-    custom_data_path = "/dataset/all/"
+    sensor_id = prompt_for_sensor()
+    #sensor_id = 'all'
+    
+    # FloydHub datasets are mounted at root - that's what this line was for
+    # custom_data_path = "/dataset/all/"
+    custom_data_path = None
+
     # Change weighting of positive samples in CLASS_WEIGHTS if desired
-    CLASS_WEIGHTS[1] = 7.
+    CLASS_WEIGHTS[1] = 1.
+    # CLASS_WEIGHTS[1] = 1., 1.7, 5., etc.
 
-    #saved_model_name = prompt_for_saved_model()
+    
     # For retrieval of previous model
-    saved_model_path = ""
+    #saved_model_path = ""
+    saved_model_path = prompt_for_saved_model()
 
-    # For saving the model later
-    model_base_name = "hhd_model__sensorALL_"
+    # For saving the model later - we overwrote model_base_name when training the general model
+    # model_base_name = "hhd_model__sensorALL_"
     
     train_on_sensor(sensor_id, saved_model_path, custom_data_path)
 
